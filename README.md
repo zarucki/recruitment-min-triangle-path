@@ -25,7 +25,9 @@ Errors in the input are properly reported:
 3 a 5
 11 b 10 0.1
 EOF
-Error: Errors in the line 2 '3 a 5':
+Error messages:
+
+Errors in the line 2 '3 a 5':
 	There's invalid input. 'a' is not a integer!
 
 Errors in the line 3 '11 b 10 0.1':
@@ -36,12 +38,15 @@ Errors in the line 3 '11 b 10 0.1':
 or 
 
 ```
-> cat << EOF | ./min-triangle.sh                                                                                                                                 <<<
+> cat << EOF | ./min-triangle.sh                                 
 7
 6 3 2
 3 1 5
 EOF
-Error: Every row of triangle definition needs to have one more element than previous one.
+
+Error messages:
+
+Every row of triangle definition needs to have one more element than previous one.
 ```
 
 Note that there is "warm up" overhead for running sbt and compiling code. For benchmark purposes program should be packaged:

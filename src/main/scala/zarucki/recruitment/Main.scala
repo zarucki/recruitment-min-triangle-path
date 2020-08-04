@@ -8,7 +8,7 @@ object Main extends App {
     .map(triangleAlgorithms.getMinPath)
 
   result match {
-    case Left(errorMessage) => println(s"Error: $errorMessage")
+    case Left(errorMessage) => println(s"Error messages:\n\n$errorMessage")
     case Right(path)        => println(s"Minimal path is: ${path.pathFromTopToBottom.mkString(" + ")} = ${path.totalOfPath}")
   }
 }
