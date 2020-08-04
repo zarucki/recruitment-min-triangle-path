@@ -2,32 +2,37 @@ package zarucki.recruitment
 
 import scala.annotation.tailrec
 
-case class MinPathSolution(total: Int = 0, nodesInOrder: List[Int] = Nil) {
-  def prependNode(newNode: Int) = {
-    copy(total + newNode, newNode :: nodesInOrder)
+case class MinPathSolution(totalOfPath: Int = 0, pathFromTopToBottom: List[Int] = Nil) {
+  def prependPath(pathFragment: Int): MinPathSolution = {
+    copy(
+      totalOfPath = totalOfPath + pathFragment,
+      pathFromTopToBottom = pathFragment :: pathFromTopToBottom
+    )
   }
 }
 
 class MinPathTriangleSolver() {
 
   def getMinPath(triangle: Triangle): MinPathSolution = {
-    val reverseRows = triangle.rows.reverseIterator
-    actualGetMinPath(reverseRows)
+    actualGetMinPath(rowsInReverseOrder = triangle.rows.reverseIterator)
   }
 
   @tailrec
-  final def actualGetMinPath(rowsInReverseOrder: Iterator[Array[Int]], memoizedSums: Option[Array[MinPathSolution]] = None): MinPathSolution = {
+  private def actualGetMinPath(
+      rowsInReverseOrder: Iterator[Array[Int]],
+      memoizedSums: Option[Array[MinPathSolution]] = None
+  ): MinPathSolution = {
     def getMinSolutionOfAdjacentLeafs(index: Int): MinPathSolution = {
-      memoizedSums.map(_.slice(index, index + 2))
-        .map(_.minBy(_.total))
+      memoizedSums
+        .map(_.slice(index, index + 2))
+        .map(_.minBy(_.totalOfPath))
         .getOrElse(MinPathSolution())
     }
 
     if (rowsInReverseOrder.hasNext) {
-      val currentRow = rowsInReverseOrder.next()
-
-      val newSums = currentRow.zipWithIndex.map { case (value, index) =>
-        getMinSolutionOfAdjacentLeafs(index).prependNode(value)
+      val newSums = rowsInReverseOrder.next().zipWithIndex.map {
+        case (value, index) =>
+          getMinSolutionOfAdjacentLeafs(index).prependPath(value)
       }
 
       actualGetMinPath(rowsInReverseOrder, Some(newSums))
