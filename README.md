@@ -1,5 +1,26 @@
 # recruitment-min-triangle-path
 
+Solution
+======================
+
+Program can be run in couple ways. Straight from the sbt as follows:
+```
+> cat example-input.txt | sbt run 
+```
+
+or with provided bash helper script which silences sbt output
+
+```
+> cat example-input.txt | ./min-triangle.sh
+```
+
+Note that there is "warm up" overhead for running sbt and compiling code. For benchmark purposes program should be packaged:
+```
+> sbt assembly
+> cat example-input.txt |  java -jar ./target/scala-2.13/recruitment-min-triangle-path-assembly-0.1.jar
+```
+
+
 Minimum Triangle Paths
 ======================
 

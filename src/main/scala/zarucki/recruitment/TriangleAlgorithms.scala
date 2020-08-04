@@ -2,6 +2,7 @@ package zarucki.recruitment
 
 import scala.annotation.tailrec
 
+// TODO: maybe singleton object?
 class TriangleAlgorithms {
   def getMinPath(triangle: Triangle): TrianglePath = {
     if (triangle.rows.isEmpty) {
