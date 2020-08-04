@@ -39,13 +39,13 @@ object Triangle {
           val lineParseResults = line.split("\\s+").map { numString =>
             numString.toIntOption match {
               case Some(value) => Right(value)
-              case None        => Left(List(s"There's invalid input. '${numString}' is not a integer!"))
+              case None        => Left(List(s"There's invalid input. '$numString' is not a integer!"))
             }
           }
 
           mergeEithers(lineParseResults) match {
             case Left(lineErrorMessages) =>
-              Left(List(lineErrorMessages.mkString(s"Errors in the line ${lineIndex} '$line':\n\t", "\n\t", "\n")))
+              Left(List(lineErrorMessages.mkString(s"Errors in the line $lineIndex '$line':\n\t", "\n\t", "\n")))
             case Right(numbers) => Right(numbers)
           }
       }
