@@ -20,8 +20,8 @@ class TriangleAlgorithms {
 
   @tailrec
   private def getMinPathForTriangleRowsInReverseOrder(
-      rowsInReverseOrder: Iterator[Array[Int]],
-      allParentRowsSummarized: Array[TrianglePath]
+      rowsInReverseOrder: Iterator[Vector[Int]],
+      allParentRowsSummarized: Vector[TrianglePath]
   ): TrianglePath = {
     if (!rowsInReverseOrder.hasNext) {
       allParentRowsSummarized.headOption.getOrElse(TrianglePath())
@@ -37,7 +37,7 @@ class TriangleAlgorithms {
     }
   }
 
-  private def pickMinInEveryAdjacentPair(solutions: Array[TrianglePath]): Iterator[TrianglePath] = {
+  private def pickMinInEveryAdjacentPair(solutions: Vector[TrianglePath]): Iterator[TrianglePath] = {
     solutions
       .sliding(2)
       .map(_.minBy(_.totalOfPath))

@@ -1,23 +1,14 @@
 package zarucki.recruitment
 
 object Main extends App {
-  val allInputLines = io.Source.stdin.getLines()
-  val parsedInput = allInputLines
-    .map { line =>
-      line.split("\\s+").map { numString =>
-        numString.toIntOption match {
-          case Some(value) => value
-          case None =>
-            println(s"There's invalid input. '${numString}' is not a integer!")
-            throw new IllegalArgumentException("Triangle is not proper.")
-        }
-      }
-    }
-    .to(Array)
+  val triangleAlgorithms = new TriangleAlgorithms()
 
-  val triangle = Triangle(parsedInput) // this does require so it can crash with inproper triangle
+  val result = Triangle
+    .fromInput(io.Source.stdin.getLines())
+    .map(triangleAlgorithms.getMinPath)
 
-  val result = new TriangleAlgorithms().getMinPath(triangle)
-
-  println(s"Minimal path is: ${result.pathFromTopToBottom.mkString(" + ")} = ${result.totalOfPath}")
+  result match {
+    case Left(errorMessage) => println(s"Error: $errorMessage")
+    case Right(path)        => println(s"Minimal path is: ${path.pathFromTopToBottom.mkString(" + ")} = ${path.totalOfPath}")
+  }
 }
