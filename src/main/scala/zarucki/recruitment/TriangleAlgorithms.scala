@@ -17,31 +17,35 @@ object MinPathSolution {
 
 class TriangleAlgorithms {
   def getMinPath(triangle: Triangle): MinPathSolution = {
-    actualGetMinPath(rowsInReverseOrder = triangle.rows.reverseIterator) // iterator to not copy whole
+    if (triangle.rows.isEmpty) {
+      MinPathSolution()
+    } else {
+      val reverseRows = triangle.rows.reverseIterator // iterator to not copy whole
+      val lastRowOfTriangle = reverseRows.next() // non empty so no need to check hasNext
+
+      getMinPathForTriangleRowsInReverseOrder(
+        rowsInReverseOrder = reverseRows,
+        allParentRowsSummarized = lastRowOfTriangle.map(MinPathSolution.ofOne)
+      )
+    }
   }
 
   @tailrec
-  private def actualGetMinPath(
+  private def getMinPathForTriangleRowsInReverseOrder(
       rowsInReverseOrder: Iterator[Array[Int]],
-      summarizedParentRow: Option[Array[MinPathSolution]] = None
+      allParentRowsSummarized: Array[MinPathSolution]
   ): MinPathSolution = {
-    if (rowsInReverseOrder.hasNext) {
-
+    if (!rowsInReverseOrder.hasNext) {
+      allParentRowsSummarized.headOption.getOrElse(MinPathSolution())
+    } else {
       val currentRow = rowsInReverseOrder.next()
 
-      summarizedParentRow match {
-        case None => actualGetMinPath(rowsInReverseOrder, Some(currentRow.map(MinPathSolution.ofOne)))
-        case Some(parentRow) =>
-          val minOfParentRow = pickMinInEveryAdjacentPair(parentRow).iterator.to(Iterable)
-          actualGetMinPath(
-            rowsInReverseOrder,
-            Some(currentRow.lazyZip(minOfParentRow).map {
-              case (currentValue, bestSolution) => bestSolution.prependPath(currentValue)
-            })
-          )
-      }
-    } else {
-      summarizedParentRow.flatMap(_.headOption).getOrElse(MinPathSolution())
+      val minOfParentRow = pickMinInEveryAdjacentPair(allParentRowsSummarized).iterator.to(Iterable)
+      val summarizedWithCurrent = currentRow
+        .lazyZip(minOfParentRow)
+        .map { case (currentValue, bestSolution) => bestSolution.prependPath(currentValue) }
+
+      getMinPathForTriangleRowsInReverseOrder(rowsInReverseOrder, summarizedWithCurrent)
     }
   }
 
