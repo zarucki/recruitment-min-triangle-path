@@ -19,7 +19,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(11, 2, 10, 9)
         )
       )
-    ) shouldEqual MinPathSolution(18, List(7, 6, 3, 2))
+    ) shouldEqual TrianglePath(18, List(7, 6, 3, 2))
   }
 
   it should "solve case #2" in {
@@ -31,7 +31,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(1, 1, 1)
         )
       )
-    ) shouldEqual MinPathSolution(10, List(4, 5, 1))
+    ) shouldEqual TrianglePath(10, List(4, 5, 1))
   }
 
   it should "solve case #3" in {
@@ -44,7 +44,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(4, 1, 8, 3)
         )
       )
-    ) shouldEqual MinPathSolution(11, List(2, 3, 5, 1))
+    ) shouldEqual TrianglePath(11, List(2, 3, 5, 1))
   }
 
   it should "solve case #4" in {
@@ -57,7 +57,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(1, 4, 8, 3)
         )
       )
-    ) shouldEqual MinPathSolution(13, List(2, 5, 5, 1))
+    ) shouldEqual TrianglePath(13, List(2, 5, 5, 1))
   }
 
   it should "solve case #5" in {
@@ -70,7 +70,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(6, 1, 9, 3)
         )
       )
-    ) shouldEqual MinPathSolution(11, List(2, 3, 5, 1))
+    ) shouldEqual TrianglePath(11, List(2, 3, 5, 1))
   }
 
   it should "solve case #6" in {
@@ -83,7 +83,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(9, 1, 8, 6)
         )
       )
-    ) shouldEqual MinPathSolution(10, List(3, 4, 2, 1))
+    ) shouldEqual TrianglePath(10, List(3, 4, 2, 1))
   }
 
   it should "solve case #7 with 0s" in {
@@ -100,7 +100,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(5, 7, 6, 2, 7, 0, 3, 9)
         )
       )
-    ) shouldEqual MinPathSolution(19, List(9, 3, 0, 3, 2, 0, 0, 2))
+    ) shouldEqual TrianglePath(19, List(9, 3, 0, 3, 2, 0, 0, 2))
   }
 
   it should "solve case #8 with negative number" in {
@@ -117,7 +117,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(5, 7, 6, 2, 7, 0, 3, 9)
         )
       )
-    ) shouldEqual MinPathSolution(-168, List(9, 8, 4, 0, 3, -200, 8, 0))
+    ) shouldEqual TrianglePath(-168, List(9, 8, 4, 0, 3, -200, 8, 0))
   }
 
   it should "solve case #9" in {
@@ -136,7 +136,7 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(1, 7, 5, 5, 4, 1, 8, 8, 3, 5),
         )
       )
-    ) shouldEqual MinPathSolution(33, List(9, 1, 2, 5, 1, 0, 6, 3, 5, 1))
+    ) shouldEqual TrianglePath(33, List(9, 1, 2, 5, 1, 0, 6, 3, 5, 1))
   }
 
   // TODO: could this be detected and more optimal?
@@ -149,14 +149,14 @@ class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
           Array(1, 1, 1)
         )
       )
-    ) shouldEqual MinPathSolution(3, List(1, 1, 1))
+    ) shouldEqual TrianglePath(3, List(1, 1, 1))
   }
 
   it should "handle one line triangle" in {
-    sut.getMinPath(Triangle(Array(Array(1)))) shouldEqual MinPathSolution(1, List(1))
+    sut.getMinPath(Triangle(Array(Array(1)))) shouldEqual TrianglePath(1, List(1))
   }
 
   it should "handle empty triangle" in {
-    sut.getMinPath(Triangle(Array())) shouldEqual MinPathSolution()
+    sut.getMinPath(Triangle(Array())) shouldEqual TrianglePath()
   }
 }

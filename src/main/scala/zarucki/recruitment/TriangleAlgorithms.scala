@@ -2,30 +2,17 @@ package zarucki.recruitment
 
 import scala.annotation.tailrec
 
-case class MinPathSolution(totalOfPath: Int = 0, pathFromTopToBottom: List[Int] = Nil) {
-  def prependPath(pathFragment: Int): MinPathSolution = {
-    copy(
-      totalOfPath = totalOfPath + pathFragment,
-      pathFromTopToBottom = pathFragment :: pathFromTopToBottom
-    )
-  }
-}
-
-object MinPathSolution {
-  def ofOne(oneFragment: Int) = MinPathSolution(oneFragment, List(oneFragment))
-}
-
 class TriangleAlgorithms {
-  def getMinPath(triangle: Triangle): MinPathSolution = {
+  def getMinPath(triangle: Triangle): TrianglePath = {
     if (triangle.rows.isEmpty) {
-      MinPathSolution()
+      TrianglePath()
     } else {
       val reverseRows = triangle.rows.reverseIterator // iterator to not copy whole
       val lastRowOfTriangle = reverseRows.next() // non empty so no need to check hasNext
 
       getMinPathForTriangleRowsInReverseOrder(
         rowsInReverseOrder = reverseRows,
-        allParentRowsSummarized = lastRowOfTriangle.map(MinPathSolution.ofOne)
+        allParentRowsSummarized = lastRowOfTriangle.map(TrianglePath.ofOne)
       )
     }
   }
@@ -33,23 +20,23 @@ class TriangleAlgorithms {
   @tailrec
   private def getMinPathForTriangleRowsInReverseOrder(
       rowsInReverseOrder: Iterator[Array[Int]],
-      allParentRowsSummarized: Array[MinPathSolution]
-  ): MinPathSolution = {
+      allParentRowsSummarized: Array[TrianglePath]
+  ): TrianglePath = {
     if (!rowsInReverseOrder.hasNext) {
-      allParentRowsSummarized.headOption.getOrElse(MinPathSolution())
+      allParentRowsSummarized.headOption.getOrElse(TrianglePath())
     } else {
       val currentRow = rowsInReverseOrder.next()
 
       val minOfParentRow = pickMinInEveryAdjacentPair(allParentRowsSummarized).iterator.to(Iterable)
       val summarizedWithCurrent = currentRow
         .lazyZip(minOfParentRow)
-        .map { case (currentValue, bestSolution) => bestSolution.prependPath(currentValue) }
+        .map { case (currentValue, bestSolution) => bestSolution.withPrepended(currentValue) }
 
       getMinPathForTriangleRowsInReverseOrder(rowsInReverseOrder, summarizedWithCurrent)
     }
   }
 
-  private def pickMinInEveryAdjacentPair(solutions: Array[MinPathSolution]): Iterator[MinPathSolution] = {
+  private def pickMinInEveryAdjacentPair(solutions: Array[TrianglePath]): Iterator[TrianglePath] = {
     solutions
       .sliding(2)
       .map(_.minBy(_.totalOfPath))
