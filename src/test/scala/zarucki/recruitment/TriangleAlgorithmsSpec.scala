@@ -3,9 +3,9 @@ package zarucki.recruitment
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class MinPathTriangleSolverSpec extends AnyFlatSpec with Matchers {
+class TriangleAlgorithmsSpec extends AnyFlatSpec with Matchers {
 
-  val sut = new MinPathTriangleSolver
+  val sut = new TriangleAlgorithms
 
   behavior of "MinPathTriangleSolver"
 

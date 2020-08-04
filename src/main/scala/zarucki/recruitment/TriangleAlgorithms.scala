@@ -11,34 +11,37 @@ case class MinPathSolution(totalOfPath: Int = 0, pathFromTopToBottom: List[Int] 
   }
 }
 
-class MinPathTriangleSolver() {
-
+class TriangleAlgorithms {
   def getMinPath(triangle: Triangle): MinPathSolution = {
-    actualGetMinPath(rowsInReverseOrder = triangle.rows.reverseIterator)
+    actualGetMinPath(rowsInReverseOrder = triangle.rows.reverseIterator) // iterator to not copy whole
   }
 
   @tailrec
   private def actualGetMinPath(
       rowsInReverseOrder: Iterator[Array[Int]],
-      memoizedSums: Option[Array[MinPathSolution]] = None
+      summarizedParentRow: Option[Array[MinPathSolution]] = None
   ): MinPathSolution = {
-    def getMinSolutionOfAdjacentLeafs(index: Int): MinPathSolution = {
-      memoizedSums
-        .map(_.slice(index, index + 2))
-        .map(_.minBy(_.totalOfPath))
-        .getOrElse(MinPathSolution())
-    }
-
     if (rowsInReverseOrder.hasNext) {
       val newSums = rowsInReverseOrder.next().zipWithIndex.map {
         case (value, index) =>
-          getMinSolutionOfAdjacentLeafs(index).prependPath(value)
+          summarizedParentRow
+            .map(getMinSolutionOfAdjacentLeafs(_, index))
+            .getOrElse(MinPathSolution())
+            .prependPath(value)
       }
 
       actualGetMinPath(rowsInReverseOrder, Some(newSums))
     } else {
-      memoizedSums.flatMap(_.headOption).getOrElse(MinPathSolution())
+      summarizedParentRow.flatMap(_.headOption).getOrElse(MinPathSolution())
     }
   }
 
+  private def getMinSolutionOfAdjacentLeafs(
+      summarizedParentRow: Array[MinPathSolution],
+      index: Int
+  ): MinPathSolution = {
+    summarizedParentRow
+      .slice(from = index, until = index + 2)
+      .minBy(_.totalOfPath)
+  }
 }
