@@ -14,7 +14,6 @@ case class Triangle(rows: Array[Array[Int]]) {
         .sliding(2)
         .forall { pair =>
           val (first :: second :: Nil) = pair.toList
-          println(s"$second $first")
           second - first == 1
         }
   )
